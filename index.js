@@ -11,58 +11,79 @@ const iotap = IOTAP.create(iota) // promisified iota library
 var seed = "BQIYTZINTTX9ZDVMUHI9Z9SOPQSDPSQQPPBGMELFGSXFVLPJRNZDONYGPCS9BTQBRPKEBWETJLRANJAKL";
 var seedEncoded = iota.utils.toTrytes(seed);
 
-// var securitylevel = 1;
+var securitylevel = 1;
 var nAddresses = 10;
 
-// new adresses
-var options = {
-  start: 0,
-  end: nAddresses-1,
-  // security: securitylevel,
-  threshold: 0
-}
-iotap.getAccountData(seedEncoded, options).then(data=>{
-  console.log('--------- getAccountData data');
-  console.log(JSON.stringify(data));
-  // console.log(data.addresses)
 
-  iotap.getBalances(data.addresses, 100).then(json => {
-    console.log('--------- getAccountData -> getBalances json');
-    console.log(json)
-  })
-});
-
-
-// // new adresses
-// var options = {
-//   // checksum: false,
-//   total: nAddresses,
-//   // security: securitylevel,
-//   returnAll: true
-// }
-// iotap.getNewAddress(seedEncoded, options).then(publicAddresses => {
-//   console.log('--------- getNewAddress publicAddresses');
-//   console.log(publicAddresses);
-//
-//   iotap.getBalances(publicAddresses, 100).then(json => {
-//     console.log('--------- getNewAddress -> getBalances json');
-//     console.log(json)
-//   })
-// });
-
-
-var publicAddresses = [
-  'SJMBZORRFQYBVNIBFETF9LBVKYNAIFFIKHCJRYYIPKIIFEYJIIM9WZLLLGGLRRACXMEXUDAGIKJBFOIN9SHUHJI9YW',
-  'WDEYHTHCDMX9CQHUDMDAVJYZDQWGKODWOJVCFHDSDDCUOCRM9SRWVLBZSWHVHZHDOHSJPJYULTAOXXLECKEQHWFVFC',
-  'M9PGQUOSOKRSIXMBVNBNQVXDWVKAIIRLZUNCIFVWMYBUJUVSHFMQLRUSH9URSCG9OQ9FRRRITCSUPRVRXG9SMU9JXC',
-]
-iotap.getBalances(publicAddresses, 100).then(json => {
-  let totalBalance = 0
-  const balances = []
-  for (const balance of json.balances) {
-    const b = parseInt(balance, 10)
-    totalBalance += b
-    balances.push(b)
+function getAccountData() {
+  console.log('> getAccountData')
+  var options = {
+    start: 0,
+    end: nAddresses-1,
+    // security: securitylevel,
+    threshold: 0
   }
-  console.log('--------- totalBalance', totalBalance, balances)
-})
+  iotap.getAccountData(seedEncoded, options).then(data=>{
+    console.log('--------- getAccountData data');
+    console.log(JSON.stringify(data));
+    // console.log(data.addresses)
+
+    iotap.getBalances(data.addresses, 100).then(json => {
+      console.log('--------- getAccountData -> getBalances json');
+      console.log(json)
+    })
+  });
+}
+
+
+function getNewAddress() {
+  console.log('> getNewAddress')
+  var options = {
+    // checksum: false,
+    total: nAddresses,
+    // security: securitylevel,
+    returnAll: true
+  }
+  iotap.getNewAddress(seedEncoded, options).then(publicAddresses => {
+    console.log('--------- getNewAddress publicAddresses');
+    console.log(publicAddresses);
+
+    iotap.getBalances(publicAddresses, 100).then(json => {
+      console.log('--------- getNewAddress -> getBalances json');
+      console.log(json)
+    })
+  });
+}
+
+
+function getBalances() {
+  console.log('> getBalances')
+  var publicAddresses = [
+    'SJMBZORRFQYBVNIBFETF9LBVKYNAIFFIKHCJRYYIPKIIFEYJIIM9WZLLLGGLRRACXMEXUDAGIKJBFOIN9SHUHJI9YW',
+    'WDEYHTHCDMX9CQHUDMDAVJYZDQWGKODWOJVCFHDSDDCUOCRM9SRWVLBZSWHVHZHDOHSJPJYULTAOXXLECKEQHWFVFC',
+    'M9PGQUOSOKRSIXMBVNBNQVXDWVKAIIRLZUNCIFVWMYBUJUVSHFMQLRUSH9URSCG9OQ9FRRRITCSUPRVRXG9SMU9JXC',
+  ]
+  iotap.getBalances(publicAddresses, 100).then(json => {
+    let totalBalance = 0
+    const balances = []
+    for (const balance of json.balances) {
+      const b = parseInt(balance, 10)
+      totalBalance += b
+      balances.push(b)
+    }
+    console.log('--------- getBalances totalBalance', totalBalance, balances)
+  })
+}
+
+
+function getInputs() {
+  iotap.getInputs(seed).then(result => {
+    console.log(result)
+    // console.log(result.totalBalance)
+  })
+}
+
+getInputs()
+// getAccountData()
+// getNewAddress()
+// getBalances()
