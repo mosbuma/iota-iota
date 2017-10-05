@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "iota.lib.js": "^0.4.0",
-    "iotap": "^2.0.0"
+    "iotap": "^2.0.0",
+    "request-promise": "^4.2.2"
   }
 }

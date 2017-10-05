@@ -1,23 +1,46 @@
-var IOTA    = require('iota.lib.js') // https://github.com/iotaledger/iota.lib.js
-var IOTAP   = require('iotap')       // https://github.com/jimthedev/iotap
+const rp    = require('request-promise') // https://github.com/request/request-promise
+const IOTA  = require('iota.lib.js')     // https://github.com/iotaledger/iota.lib.js
+const IOTAP = require('iotap')           // https://github.com/jimthedev/iotap
+
+// function findIOTAnode() {
+//   let latestMilestoneIndex = 0
+//   let bestIOTAnode = undefined
+//   //...
+//   rp('https://iotasupport.com/providers.json?' + (new Date().getTime())).then(html => {
+//     const json = JSON.parse(html) // convert to internal data structures to make sure we received valid data
+//     // console.log(json.length)
+//     // console.log(json)
+//     for (const hostport of json) {
+//       let [protocol, hostname, port] = hostport.split(':')
+//       hostname = hostname.slice(2)
+//       host = `${protocol}://${hostname}`
+//       // console.log(host, port)
+//       const _iota  = new IOTA({host: host, port: port})
+//       const _iotap = IOTAP.create(_iota) // promisified iota library
+//       _iotap.getNodeInfo().then(info => {
+//         if (info.latestMilestoneIndex == 227885) return
+//         console.log(info.latestMilestoneIndex, info.latestMilestone)
+//       })
+//     }
+//   })
+// }
+
 
 const iota  = new IOTA({ host: 'http://node02.iotatoken.nl', port: 14265 })
 const iotap = IOTAP.create(iota) // promisified iota library
 
-// var info = iotap.getNodeInfo();
-// info.then(info=>{console.log(info)})
 
-// seed with checksum PKW
-var seed = "BQIYTZINTTX9ZDVMUHI9Z9SOPQSDPSQQPPBGMELFGSXFVLPJRNZDONYGPCS9BTQBRPKEBWETJLRANJAKL";
-var seedEncoded = iota.utils.toTrytes(seed);
+//
+const seed = "BQIYTZINTTX9ZDVMUHI9Z9SOPQSDPSQQPPBGMELFGSXFVLPJRNZDONYGPCS9BTQBRPKEBWETJLRANJAKL";
+const seedEncoded = iota.utils.toTrytes(seed);
 
-var securitylevel = 1;
-var nAddresses = 10;
+const securitylevel = 1;
+const nAddresses = 10;
 
 
 function getAccountData() {
   console.log('> getAccountData')
-  var options = {
+  const options = {
     start: 0,
     end: nAddresses-1,
     // security: securitylevel,
@@ -38,7 +61,7 @@ function getAccountData() {
 
 function getNewAddress() {
   console.log('> getNewAddress')
-  var options = {
+  const options = {
     // checksum: false,
     total: nAddresses,
     // security: securitylevel,
@@ -58,7 +81,7 @@ function getNewAddress() {
 
 function getBalances() {
   console.log('> getBalances')
-  var publicAddresses = [
+  const publicAddresses = [
     'SJMBZORRFQYBVNIBFETF9LBVKYNAIFFIKHCJRYYIPKIIFEYJIIM9WZLLLGGLRRACXMEXUDAGIKJBFOIN9SHUHJI9YW',
     'WDEYHTHCDMX9CQHUDMDAVJYZDQWGKODWOJVCFHDSDDCUOCRM9SRWVLBZSWHVHZHDOHSJPJYULTAOXXLECKEQHWFVFC',
     'M9PGQUOSOKRSIXMBVNBNQVXDWVKAIIRLZUNCIFVWMYBUJUVSHFMQLRUSH9URSCG9OQ9FRRRITCSUPRVRXG9SMU9JXC',
