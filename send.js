@@ -15,7 +15,7 @@ function sendTransfer(text) {
   }
   const transfers = [{
       address: settings.destinationAddress,
-      value: 0,
+      value: 1, // to make transfers a little bit more interesting
       tag: iota.utils.toTrytes('BeWater'),
       message: iota.utils.toTrytes(JSON.stringify(message)),
   }]
@@ -29,6 +29,6 @@ function sendTransfer(text) {
 }
 
 
-const text = process.argv.slice(2).join(' ')
-if (!text) console.error('error: no text message provided')
-else          sendTransfer(text)
+let text = process.argv.slice(2).join(' ')
+if (!text) text = 'Random text with value ' + Math.random()
+sendTransfer(text)

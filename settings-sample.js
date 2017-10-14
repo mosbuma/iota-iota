@@ -1,6 +1,6 @@
 const settings = {
-  host: 'http://node02.iotatoken.nl',
-  port: 14265,
+  host: 'http://node03.iotatoken.nl',
+  port: 15265,
   depth: 4,
   minWeightMagnitude: 14,
   seed: '<seed here>',
