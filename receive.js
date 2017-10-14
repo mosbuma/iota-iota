@@ -10,6 +10,8 @@ function getTransfers() {
   // TODO: limit to new transfers
 
   iota.api.getTransfers(settings.seed, function(e, transferBundles) {
+    setTimeout(getTransfers, 250)
+
     if (e) throw e
     for (const bundle of transferBundles) {
       const messageStringified = iota.utils.extractJson(bundle)
@@ -103,4 +105,3 @@ function getTransfers() {
 // setInterval(getAccountData, 30 * 1000)
 
 getTransfers()
-// setInterval(getTransfers, 1 * 1000)
