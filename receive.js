@@ -7,20 +7,24 @@ const iota  = new IOTA({ host: settings.host, port: settings.port }) // see: htt
 
 function getTransfers() {
   console.log('> getTransfers')
-  // TODO: limit to new transfers
 
-  iota.api.getTransfers(settings.seed, function(e, transferBundles) {
+  const options = { // TODO: limit to new transfers
+    inclusionStates: true,
+  }
+
+  iota.api.getTransfers(settings.seed, options, function(e, transferBundles) {
     setTimeout(getTransfers, 250)
 
     if (e) throw e
+
     for (const bundle of transferBundles) {
       const messageStringified = iota.utils.extractJson(bundle)
       if (!messageStringified) continue
       const message = JSON.parse(messageStringified)
       if (!message.timestamp || !message.id || !message.text) continue
-      // console.log(transfer)
+      // console.log(bundle)
       // TODO keep track of highest transfer index
-      console.log(`${message.timestamp} [${message.id}] ${message.text}`)
+      console.log(`${message.timestamp} ${bundle[0].persistence ? '' : '(unconfirmed) '}[${message.id}] ${message.text}`)
     } // next transaction bundles
   })
 }
